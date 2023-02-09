@@ -16,10 +16,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "token")
+@Table(name = "session")
 public class Token {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -42,6 +41,7 @@ public class Token {
      */
     public static Token createToken(User user) {
         Token token = new Token();
+        token.setId(randomId());
         token.setToken(UUID.randomUUID().toString());
         token.setCaducity(LocalDateTime.now().plusDays(7));
         token.setUser(user);
@@ -52,4 +52,7 @@ public class Token {
         return caducity.isBefore(LocalDateTime.now());
     }
 
+    private static Long randomId() {
+        return (long) (Math.random() * 1000000000);
+    }
 }
