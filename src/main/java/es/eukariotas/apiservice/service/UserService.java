@@ -91,17 +91,22 @@ public class UserService {
         if (user == null) {
             throw new CustomExceptions("User not found");
         }else {
-            if (user.getToken() != null) {
-                user.setToken(null);
+            System.out.println("usuario logeado: " + user.getUserName());
+            Token token = Token.createToken(user);
+            try {
+                tokenRepository.deleteTokenByUserId(user.getId());
+            }catch (Exception e) {
+                System.out.println("No token found");
             }
-           Token token = Token.createToken(user);
+            tokenRepository.save(token);
             user.setToken(token);
-            user.setLastLogin(LocalDateTime.now());
-           tokenRepository.save(token);
-           userRepository.save(user);
+            userRepository.save(user);
+
             return user;
         }
     }
+
+
 
     /**
      * Verifies the token of the user

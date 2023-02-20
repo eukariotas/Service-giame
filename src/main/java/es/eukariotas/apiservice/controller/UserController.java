@@ -38,13 +38,10 @@ public class UserController{
      */
     @GetMapping("/login/{userName}/{password}")
     public ResponseEntity<User> login(@PathVariable(value = "userName") String user, @PathVariable("password") String password){
+        System.out.println("usuario: " + user + " password: " + password);
         try {
-          User user1 = userService.login(user, password);
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.set("token", user1.getToken().getToken());
-            return new ResponseEntity<>(user1, responseHeaders, HttpStatus.OK);
-
-
+            User userData = userService.login(user, password);
+            return ResponseEntity.ok().header("token", userData.getToken().getToken()).body(userData);
         } catch (CustomExceptions e) {
             throw new RuntimeException(e);
         }

@@ -1,5 +1,6 @@
 package es.eukariotas.apiservice.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class Party {
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Long id;
 
-    @Column(name = "winner", nullable = false)
+    @Column(name = "winner")
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Long ganador;
 
@@ -34,10 +35,33 @@ public class Party {
     @JdbcTypeCode(SqlTypes.TIMESTAMP)
     private LocalDateTime comienzo_partida;
 
+    @Column(name = "max_players", nullable = false)
+    @JdbcTypeCode(SqlTypes.INTEGER)
+    private Integer max_players;
+
+    @Column(name = "tipe_game", nullable = false)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private String tipe_game;
+
+    @Column(name = "status", nullable = false)//puede ser open, started o finished
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private String status;
+
     @ManyToMany(mappedBy = "parties")
     private Collection<User> users = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "party", orphanRemoval = true)
     private List<Turn> turns = new ArrayList<>();
+
+    public void addUsers(User user) {
+        users.add(user);
+    }
+
+    public void addTurn(Turn turn) {
+        turns.add(turn);
+    }
+
+
 
 }

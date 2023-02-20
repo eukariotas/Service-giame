@@ -1,6 +1,7 @@
 package es.eukariotas.apiservice.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,6 +54,7 @@ public class User {
     private String userCountry;
 
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "user_has_party",
             joinColumns = @JoinColumn(name = "party_id"),
@@ -63,13 +66,24 @@ public class User {
     private LocalDateTime lastLogin;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private Token token;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Turn> turns = new ArrayList<>();
-
+    @JsonIgnore
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Stadistics stadistics;
+
+    public void addParty(Party party) {
+        parties.add(party);
+    }
+
+    public void addTurn(Turn turn) {
+        turns.add(turn);
+    }
+
+
 
 }
