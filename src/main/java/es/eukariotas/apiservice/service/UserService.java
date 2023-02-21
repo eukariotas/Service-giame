@@ -92,7 +92,7 @@ public class UserService {
             throw new CustomExceptions("User not found");
         }else {
             System.out.println("usuario logeado: " + user.getUserName());
-            Token token = Token.createToken(user);
+            /*Token token = Token.createToken(user);
             try {
                 tokenRepository.deleteTokenByUserId(user.getId());
             }catch (Exception e) {
@@ -100,7 +100,7 @@ public class UserService {
             }
             tokenRepository.save(token);
             user.setToken(token);
-            userRepository.save(user);
+            userRepository.save(user);*/
 
             return user;
         }

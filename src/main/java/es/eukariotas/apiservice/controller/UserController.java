@@ -41,7 +41,11 @@ public class UserController{
         System.out.println("usuario: " + user + " password: " + password);
         try {
             User userData = userService.login(user, password);
-            return ResponseEntity.ok().header("token", userData.getToken().getToken()).body(userData);
+            if (userData != null) {
+                return new ResponseEntity<>(userData, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
         } catch (CustomExceptions e) {
             throw new RuntimeException(e);
         }

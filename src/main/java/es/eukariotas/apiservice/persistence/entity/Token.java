@@ -16,7 +16,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "session")
+@Table(name = "token")
 public class Token {
     @Id
     @Column(name = "id", nullable = false)
