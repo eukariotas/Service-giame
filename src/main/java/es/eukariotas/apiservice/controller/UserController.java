@@ -96,8 +96,8 @@ public class UserController{
         }
     }
 
-    @GetMapping("/register")
-    public ResponseEntity<String> register(@RequestBody String userName, @RequestParam("password") String password, @RequestParam("email") String email){
+    @PostMapping("/register/{password}/{email}")
+    public ResponseEntity<String> register(@RequestBody String userName, @PathVariable("password") String password, @PathVariable("email") String email){
         User newUser = new User();
         newUser.setUserName(userName);
         newUser.setPassword(password);

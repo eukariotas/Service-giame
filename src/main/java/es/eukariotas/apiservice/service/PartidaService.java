@@ -96,8 +96,9 @@ public class PartidaService extends GenericService{
     }
 
     public List<Party> getOpenParties() {
-        List<Party> parties = partidaRepository.findAll();
-        return parties.stream().filter(party -> party.getStatus()=="open").collect(Collectors.toList());
+
+       List<Party> parties = partidaRepository.findAll();
+       return parties.stream().filter(party -> party.getStatus().equals("open")).peek(party -> System.out.println(party.getStatus())).collect(Collectors.toList());
     }
 
     public Boolean finishParty(Long id) {

@@ -31,7 +31,7 @@ public class PartidaController{
         return partidaService.getAllPartidas();
     }
 
-    @GetMapping("/partida/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Party> getPartida(@PathVariable("id") Long id){
         Party party = null;
         HttpStatus status = HttpStatus.BAD_REQUEST;
