@@ -16,7 +16,7 @@ import org.hibernate.type.SqlTypes;
 @Table(name = "turn")
 public class Turn {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Long id;
@@ -24,6 +24,10 @@ public class Turn {
     @Column(name = "info", nullable = false)
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private String informacion;
+
+    @Column(name = "num_turn", nullable = false)
+    @JdbcTypeCode(SqlTypes.INTEGER)
+    private Integer num_turn;
 
     @Column(name = "end")
     @JdbcTypeCode(SqlTypes.TINYINT)

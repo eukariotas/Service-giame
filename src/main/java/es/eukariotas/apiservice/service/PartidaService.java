@@ -52,18 +52,18 @@ public class PartidaService extends GenericService{
         }
     }
 
-    public Boolean createParty(Party party, HttpServletRequest request) throws CustomExceptions {
+    public Party createParty(HttpServletRequest request,String tipe) throws CustomExceptions {
         verifyHeader(request);
         Map<String,String> headers = headers(request);
-        String user_id = headers.get("user_id");
+        String user_id = headers.get("user");
         User user = userRepository.findById(Long.parseLong(user_id)).orElse(null);
-        if (!!partidaRepository.existsById(party.getId())&& user != null){
-            party.addUsers(user);
+        if (user != null){
+            Party party = Party.createParty(user,tipe);
             user.addParty(party);
             userRepository.save(user);
-            partidaRepository.save(party);
+            return partidaRepository.save(party);
         }
-        return false;
+        return null;
     }
 
     public List<Turn> getTurnos(Long id) {
@@ -74,7 +74,7 @@ public class PartidaService extends GenericService{
         return null;
     }
 
-    public Boolean joinParty(Long id, HttpServletRequest request) {
+    public Party joinParty(Long id, HttpServletRequest request) throws CustomExceptions {
         Party party = partidaRepository.findById(id).orElse(null);
         User user = userRepository.findById(Long.parseLong(headers(request).get("user_id"))).orElse(null);
         if (party != null && user != null){
@@ -83,10 +83,12 @@ public class PartidaService extends GenericService{
             if (party.getUsers().size() == party.getMax_players())
                 party.setStatus("started");
             userRepository.save(user);
-            partidaRepository.save(party);
-            return true;
+            Party saved = partidaRepository.save(party);
+            return saved;
+        }else {
+            throw new CustomExceptions("No se ha podido unir a la partida");
         }
-        return false;
+
     }
 
     public Party getParty(Long id) {

@@ -47,20 +47,30 @@ public class PartidaController{
     }
 
     @GetMapping("/open")
-    public List<Party> getPartidasAbiertas() {
-        return partidaService.getOpenParties();
-    }
-
-    @PostMapping("/crear")
-    public ResponseEntity<Boolean> crearPartida(@RequestBody Party party){
-        Boolean created = false;
+    public ResponseEntity<List<Party>> getPartidasAbiertas() {
+        List<Party> parties = null;
         HttpStatus status = HttpStatus.BAD_REQUEST;
         HttpHeaders headers = new HttpHeaders();
         try {
             //partidaService.verifyHeader(request);
-            partidaService.createParty(party, request);
+            parties = partidaService.getOpenParties();
             status = HttpStatus.OK;
-            created = true;
+        } catch (Exception e) {
+            //lanzar respuesta con error
+        }
+        return new ResponseEntity<>(parties, headers, status);
+    }
+
+    @PostMapping("/create/{tipe}")
+    public ResponseEntity<Party> crearPartida(@PathVariable("tipe") String tipe){
+        Party created = null;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpHeaders headers = new HttpHeaders();
+        try {
+            //partidaService.verifyHeader(request);
+           created = partidaService.createParty(request, tipe);
+            status = HttpStatus.OK;
+
         } catch (Exception e) {
             //lanzar respuesta con error
         }
@@ -73,25 +83,25 @@ public class PartidaController{
         HttpStatus status = HttpStatus.BAD_REQUEST;
         HttpHeaders headers = new HttpHeaders();
         try {
-            //partidaService.verifyHeader(request);
+            //TODO: partidaService.verifyHeader(request);
             turnos = partidaService.getTurnos(id);
             status = HttpStatus.OK;
         } catch (Exception e) {
-            //lanzar respuesta con error
+            //TODO: lanzar respuesta con error
         }
         return new ResponseEntity<>(turnos, headers, status);
     }
 
     @GetMapping("/join/{id}")
-    public ResponseEntity<Boolean> joinPartida(@PathVariable("id") Long id){
-        Boolean joined = false;
+    public ResponseEntity<Party> joinPartida(@PathVariable("id") Long id){
+        Party joined = null;
         HttpStatus status = HttpStatus.BAD_REQUEST;
         HttpHeaders headers = new HttpHeaders();
         try {
             //partidaService.verifyHeader(request);
             joined = partidaService.joinParty(id, request);
             status = HttpStatus.OK;
-            joined = true;
+
         } catch (Exception e) {
             //lanzar respuesta con error
         }

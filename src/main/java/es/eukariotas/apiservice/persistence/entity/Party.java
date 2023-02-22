@@ -43,10 +43,11 @@ public class Party {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private String tipe_game;
 
-    @Column(name = "status", nullable = false)//puede ser open, started o finished
+    @Column(name = "state", nullable = false)//puede ser open, started o finished
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private String status;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "parties")
     private Collection<User> users = new ArrayList<>();
 
@@ -62,6 +63,17 @@ public class Party {
         turns.add(turn);
     }
 
-
+    public static Party createParty(User user,String tipe_game){
+        Party party = new Party();
+        party.setComienzo_partida(LocalDateTime.now());
+        party.setStatus("open");
+        party.addUsers(user);
+        if (tipe_game == "aviones"){
+            party.setMax_players(8);
+        }else{
+            party.setMax_players(2);
+        }
+        return party;
+    }
 
 }
