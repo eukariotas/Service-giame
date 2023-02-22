@@ -53,7 +53,7 @@ public class PartidaService extends GenericService{
     }
 
     public Party createParty(HttpServletRequest request,String tipe) throws CustomExceptions {
-        verifyHeader(request);
+        //verifyHeader(request);
         Map<String,String> headers = headers(request);
         String user_id = headers.get("user");
         User user = userRepository.findById(Long.parseLong(user_id)).orElse(null);

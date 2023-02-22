@@ -22,7 +22,7 @@ import java.util.List;
 @Table(name = "party")
 public class Party {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Long id;
@@ -35,7 +35,7 @@ public class Party {
     @JdbcTypeCode(SqlTypes.TIMESTAMP)
     private LocalDateTime comienzo_partida;
 
-    @Column(name = "max_players", nullable = false)
+    @Column(name = "max_player", nullable = false)
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Integer max_players;
 

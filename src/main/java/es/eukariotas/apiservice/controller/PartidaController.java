@@ -61,7 +61,7 @@ public class PartidaController{
         return new ResponseEntity<>(parties, headers, status);
     }
 
-    @PostMapping("/create/{tipe}")
+    @GetMapping("/create/{tipe}")
     public ResponseEntity<Party> crearPartida(@PathVariable("tipe") String tipe){
         Party created = null;
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -72,7 +72,7 @@ public class PartidaController{
             status = HttpStatus.OK;
 
         } catch (Exception e) {
-            //lanzar respuesta con error
+           e.printStackTrace();
         }
         return new ResponseEntity<>(created, headers, status);
     }
