@@ -1,5 +1,6 @@
 package es.eukariotas.apiservice.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import org.hibernate.type.SqlTypes;
 @Table(name = "turn")
 public class Turn {
     @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     @JdbcTypeCode(SqlTypes.INTEGER)
     private Long id;
@@ -37,10 +38,12 @@ public class Turn {
     @JoinColumn(name = "party_id")
     private Party party;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "next_turn_id")
     private Turn next_turn;

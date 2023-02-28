@@ -38,7 +38,7 @@ public class UserController{
      */
     @GetMapping("/login/{userName}/{password}")
     public ResponseEntity<User> login(@PathVariable(value = "userName") String user, @PathVariable("password") String password){
-        System.out.println("usuario: " + user + " password: " + password);
+
         try {
             User userData = userService.login(user, password);
             if (userData != null) {

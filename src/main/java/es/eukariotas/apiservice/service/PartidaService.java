@@ -76,21 +76,23 @@ public class PartidaService extends GenericService{
         return null;
     }
 
-    public Party joinParty(Long id, HttpServletRequest request) throws CustomExceptions {
+    public Party joinParty(Long id, HttpServletRequest request) {
+        try {
         Party party = partidaRepository.findById(id).orElse(null);
-        User user = userRepository.findById(Long.parseLong(headers(request).get("user_id"))).orElse(null);
+        User user = userRepository.findById(Long.parseLong(headers(request).get("user"))).orElse(null);
         if (party != null && user != null){
             party.addUsers(user);
-            user.addParty(party);
-            if (party.getUsers().size() == party.getMax_players())
-                party.setStatus("started");
-            userRepository.save(user);
+            party.setStatus("started");
             Party saved = partidaRepository.save(party);
+            System.out.println("user: " + user.getId() + " se unio a la partida: " + party.getId());
             return saved;
         }else {
             throw new CustomExceptions("No se ha podido unir a la partida");
         }
-
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public Party getParty(Long id) {
@@ -100,7 +102,7 @@ public class PartidaService extends GenericService{
     public List<Party> getOpenParties() {
 
        List<Party> parties = partidaRepository.findAll();
-       return parties.stream().filter(party -> party.getStatus().equals("open")).peek(party -> System.out.println(party.getStatus())).collect(Collectors.toList());
+       return parties.stream().filter(party -> party.getStatus().equals("open")).peek(party -> System.out.println("Devolviendo partida: "+party.getId()+" juego: "+party.getTipe_game())).collect(Collectors.toList());
     }
 
     public Boolean finishParty(Long id) {

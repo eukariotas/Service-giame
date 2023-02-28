@@ -22,15 +22,17 @@ public class TurnoService {
         this.userRepository = userRepository;
     }
 
-    public void saveTurno(Turn turn) {
+    public void saveTurno(Turn turn,String user) {
         try {
-            Party party = turn.getParty();
-            party.addTurn(turn);
-            User user = turn.getUser();
-            user.addTurn(turn);
+            Party party = partidaRepository.findById(turn.getParty().getId()).orElse(null);
+            User userF = userRepository.findById(Long.parseLong(user)).orElse(null);
+            userF.addTurn(turn);
+            turn.setUser(userF);
+            Turn turnosaved= turnoRepository.save(turn);
+            party.addTurn(turnosaved);
             partidaRepository.save(party);
-            userRepository.save(user);
-            turnoRepository.save(turn);
+            userRepository.save(userF);
+            System.out.println("movimiento guardado"+turn.getInformacion());
         } catch (Exception e) {
             e.printStackTrace();
         }

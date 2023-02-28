@@ -70,7 +70,7 @@ public class PartidaController{
             //partidaService.verifyHeader(request);
            created = partidaService.createParty(request, tipe);
             status = HttpStatus.OK;
-
+            System.out.println("Partida creada");
         } catch (Exception e) {
            e.printStackTrace();
         }
@@ -78,32 +78,37 @@ public class PartidaController{
     }
 
     @GetMapping("/turnos/{id}")
-    public ResponseEntity<List<Turn>> getTurnos(@PathVariable("id") Long id){
+    public ResponseEntity<List<Turn>> getTurnos(@PathVariable("id") String id){
         List<Turn> turnos = null;
         HttpStatus status = HttpStatus.BAD_REQUEST;
         HttpHeaders headers = new HttpHeaders();
+
         try {
             //TODO: partidaService.verifyHeader(request);
-            turnos = partidaService.getTurnos(id);
+            turnos = partidaService.getTurnos(Long.valueOf(id));
             status = HttpStatus.OK;
         } catch (Exception e) {
-            //TODO: lanzar respuesta con error
+            e.printStackTrace();
         }
         return new ResponseEntity<>(turnos, headers, status);
     }
 
     @GetMapping("/join/{id}")
-    public ResponseEntity<Party> joinPartida(@PathVariable("id") Long id){
+    public ResponseEntity<Party> joinPartida(@PathVariable("id") String id){
         Party joined = null;
         HttpStatus status = HttpStatus.BAD_REQUEST;
         HttpHeaders headers = new HttpHeaders();
+
+
         try {
+            System.out.println("ID: " + id);
             //partidaService.verifyHeader(request);
-            joined = partidaService.joinParty(id, request);
+            joined = partidaService.joinParty(Long.valueOf(id), request);
+            System.out.println("Partida unida");
             status = HttpStatus.OK;
 
         } catch (Exception e) {
-            //lanzar respuesta con error
+            e.printStackTrace();
         }
         return new ResponseEntity<>(joined, headers, status);
     }

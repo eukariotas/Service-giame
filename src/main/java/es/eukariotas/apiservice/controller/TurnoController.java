@@ -53,9 +53,10 @@ public class TurnoController{
         Boolean created = false;
         HttpStatus status = HttpStatus.BAD_REQUEST;
         HttpHeaders headers = new HttpHeaders();
+        String user = request.getHeader("user");
         try {
             //partidaService.verifyHeader(request);
-            turnoService.saveTurno(turno);
+            turnoService.saveTurno(turno, user);
             created = true;
             status = HttpStatus.OK;
         } catch (Exception e) {
