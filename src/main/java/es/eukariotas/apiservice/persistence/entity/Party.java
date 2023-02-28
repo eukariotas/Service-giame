@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -67,6 +68,7 @@ public class Party {
         Party party = new Party();
         party.setComienzo_partida(LocalDateTime.now());
         party.setStatus("open");
+        party.setTipe_game(tipe_game);
         party.addUsers(user);
         if (tipe_game == "aviones"){
             party.setMax_players(8);
@@ -76,4 +78,15 @@ public class Party {
         return party;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Party party)) return false;
+        return getId().equals(party.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }

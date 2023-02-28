@@ -52,6 +52,7 @@ public class PartidaService extends GenericService{
         }
     }
 
+
     public Party createParty(HttpServletRequest request,String tipe) throws CustomExceptions {
         //verifyHeader(request);
         Map<String,String> headers = headers(request);
@@ -59,9 +60,10 @@ public class PartidaService extends GenericService{
         User user = userRepository.findById(Long.parseLong(user_id)).orElse(null);
         if (user != null){
             Party party = Party.createParty(user,tipe);
-            user.addParty(party);
-            userRepository.save(user);
-            return partidaRepository.save(party);
+            Party partySaved = partidaRepository.save(party);
+            user.addParty(partySaved);
+
+            return partySaved;
         }
         return null;
     }
